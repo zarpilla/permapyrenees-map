@@ -51,8 +51,10 @@ export default {
         center: [-0.10777898737029545, 42.338473777989066],
         pitch: this.pitch,
         bearing: this.bearing,
-        zstyle: "mapbox://styles/jordiwebcoop/clwg9avo000hh01pn0o1d97q3", // style URL
         style: "mapbox://styles/mapbox/outdoors-v12",
+        scrollZoom      : false,
+        boxZoom         : true,
+        doubleClickZoom : true
       });
 
       this.map.addControl(new mapboxgl.NavigationControl(), "top-left");
@@ -112,6 +114,47 @@ export default {
       const changeMapTypeCustomControl = new ChangeMapTypeCustomControl();
 
       this.map.addControl(changeMapTypeCustomControl, "top-left");
+
+      class MapOptionsCustomControl {     
+        constructor(t) {
+          this.t = t;
+        }
+        onAdd(map) {
+          this.map = map;
+          this.mapStyle = "3d";
+          this.container = document.createElement("div");
+          this.container.className = "mapboxgl-ctrl ctrl-options";
+          this.container.title = "";
+          this.svg = document.createElement("div");
+          this.svg.className = "change-map-type-custom-control";
+          this.svg.innerHTML = `<svg class="select-type-icon-control" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-280q83 0 141.5-58.5T680-480q0-83-58.5-141.5T480-680q-83 0-141.5 58.5T280-480q0 83 58.5 141.5T480-280Zm0 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+          `;
+
+          this.container.appendChild(this.svg);
+
+          this.container.addEventListener("click", () => {
+            const legend = document.getElementById("legend");
+            legend.classList.toggle("xs-hidden");
+            const legendLayers = document.getElementById("legend-layers");
+            legendLayers?.classList.toggle("xs-hidden");
+            this.t.tooltip = null;
+          });
+          return this.container;
+        }
+        onRemove() {
+          this.container.parentNode.removeChild(this.container);
+          this.map = undefined;
+        }
+      }
+
+      console.log("this", this);
+      const mapOptionsCustomControl = new MapOptionsCustomControl(this);
+      mapOptionsCustomControl
+
+      this.map.addControl(mapOptionsCustomControl, "top-left");
+
+      // disable map zoom when using scroll
+      //this.map.scrollZoom.disable();
 
       this.map.on("style.load", async () => {
         console.log("style loaded");
@@ -280,6 +323,12 @@ export default {
       }
       this.showLayers();
     },
+    closeLegend() {
+      const legend = document.getElementById("legend");
+      legend.classList.toggle("xs-hidden");
+      const legendLayers = document.getElementById("legend-layers");
+      legendLayers?.classList.toggle("xs-hidden");
+    },
     showLayers() {
       const allLayers = this.map.getStyle().layers;
       const roadLayers = allLayers.filter((layer) =>
@@ -337,10 +386,13 @@ export default {
   },
   template: `
     <div id="app-wrapper">    
-      <div id="legend">
-        <div class="d-flex justify-content-between">
+      <div id="legend" class="xs-hidden">
+        <div class="close-legend" @click="closeLegend">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        </div>
+        <div class="d-flex d-block-xs justify-content-between">
           <div class="legend-title text-start">{{i18n.actions}}</div>
-          <div class="d-flex justify-content-between w-50">
+          <div class="d-flex justify-content-between sensors-list">
             <div v-for="type in types" :key="type" @click="toggleType(type)" class="select-type">
               <img :src="'/wp-content/themes/divi-child/map/assets/images/' + type + '.svg'" alt="type" class="type-icon" />
               <span class="legend" :class="type">{{ i18n.sensors[type] }}</span>
@@ -351,10 +403,10 @@ export default {
           <div class="legend-text">{{ i18n.legend_text }}</div>
         </div>
       </div>
-      <div id="legend-layers" v-if="mode === 'full'">
-        <div class="d-flex justify-content-between">
+      <div id="legend-layers" v-if="mode === 'full'" class="xs-hidden">
+        <div class="d-flex d-block-xs justify-content-between">
           <div class="legend-title text-start">{{i18n.legend}}</div>
-          <div class="d-flex justify-content-between w-50">
+          <div class="d-flex justify-content-between sensors-list">
             <div v-for="layer in layers" :key="type" @click="toggleLayer(layer)" class="select-type">
               <span class="legend" :class="type">{{ i18n.layers[layer] }}</span>
               <svg v-if="layersSelected.includes(layer)" class="select-type-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-280q83 0 141.5-58.5T680-480q0-83-58.5-141.5T480-680q-83 0-141.5 58.5T280-480q0 83 58.5 141.5T480-280Zm0 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>

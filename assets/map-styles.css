@@ -9,8 +9,9 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
 .zzjustify-content-between {
   justify-content: space-between;
 }
-.w-50{
-  width: 50%;
+.sensors-list{
+  width: auto;
+  margin: auto;
 }
 .legend-title{
   color: #46717a;
@@ -18,13 +19,14 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   font-weight: bold;
   text-transform: uppercase;
   line-height: 24px;
-  width: 25%;
+  width: 15%;
 }
 .legend-text{
   color: #46717a;
   font-size: 0.8rem;
   line-height: 24px;
   width: 25%;
+  text-align: right;
 }
 .select-type{
   color: #46717a;  
@@ -169,6 +171,9 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   width: 330px;
   height: auto;
   overflow: hidden;
+  max-height: calc(90vh - 60px);
+  overflow-y: auto;
+  z-index: 100;
 }
 
 .close{
@@ -268,16 +273,82 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
 .text-start{
   margin-left: 0;
   margin-right: auto;
+}
+.ctrl-options{
+  display: none;
+}
+.close-legend{
+  display: none;
+}
 
+@media (max-width: 1250px) {
+  .legend-title{
+    display: none;
+    width: 15%;
+  }
+  .legend-text{
+    display: none;
+    width: 15%;
+  }
+  #legend > div{
+    padding: 1rem 1rem;
+  }
 }
 
 @media (max-width: 767px) {
   body {
     font-size: 14px;
   }
+  .xs-hidden{    
+    transition: margin-right 0.3s ease;
+  }
+  .d-block-xs{
+    display: block!important;
+  }
   #legend {
-    display: none;
-  }  
+    display: block;
+    z-index: 1000;
+    width: 230px;
+    height: 100vh;
+    right: 0;
+    left: inherit;
+    margin-right: 0;
+    transition: margin-right 0.3s ease;
+  }
+  
+  #legend.xs-hidden{
+    margin-right: -230px;
+    transition: margin-right 0.3s ease;
+  }
+
+  #legend > div{
+    padding: 1rem 1rem;
+  }
+  .close-legend{
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0!important;
+    cursor: pointer;
+  }
+  .legend-title{
+    margin-bottom: 1rem;
+  }
+  .legend-title, .legend-text{
+    display: block;
+    width: 100%;
+    text-align: left;    
+  }
+  .legend-text{
+    margin-top: 1rem;
+  }
+  .select-type{
+    margin-bottom: 0.75rem;
+  }
+  .sensors-list{
+    display: block;
+  }
   #map {
     top: 0px;
   }  
@@ -305,5 +376,8 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
     height: 30px;
     line-height: 30px;
     font-size: 0.6rem;
+  }
+  .ctrl-options{
+    display: block;
   }
 }

@@ -14,6 +14,7 @@
   top: 100px;
   right: 0;
   margin-right: 100px;
+  max-height: calc(90vh - 76px);
 }
 .tooltip-placeholder{
   position: absolute;
@@ -34,19 +35,51 @@
   top: 10px
 }
 
+@media (max-width: 1250px) {
+  #legend-layers > div{
+    padding: 1rem 1rem;
+  }
+}
+
 @media (max-width: 767px) {
   body {
     font-size: 14px;
   }
+  
   #legend {
-    display: none;
+    display: block;
+    z-index: 1000;
+    width: 230px;
+    height: 100vh;
+    right: 0;
+    left: inherit;    
   }  
+
   #map {
     top: 0px;
   }  
   #legend-layers {
-    display: none;
+    display: block;
+    z-index: 1000;
+    width: 230px;
+    height: 100vh;
+    right: 0;
+    left: inherit;
+    top: 250px;
+    margin-right: 0;
+    transition: margin-right 0.3s ease;
+    height: calc(100vh - 250px);
   }
+  #legend-layers > div {
+    padding: 1rem;
+  }
+  
+  #legend-layers.xs-hidden{
+    margin-right: -230px;
+    transition: margin-right 0.3s ease;
+  }
+
+
   .tooltip-placeholder {
     display: none;
   }  

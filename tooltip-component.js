@@ -3,7 +3,9 @@ import { i18n } from "./helper.js";
 export default {  
   props: {
     tooltip: null,
-    base: ''
+    items: [],
+    base: '',
+    detail: 0
   },
   mounted() {},
   data() {
@@ -26,6 +28,10 @@ export default {
       const seconds = Math.round(((longitude - degrees) * 60 - minutes) * 60);
       return `${degrees}° ${minutes}' ${seconds}"E`;
     },
+    detailUrl() {
+      const parent = this.tooltip.acf.detail && this.items ? this.items.find(i => i.id === this.tooltip.acf.detail) : null;
+      return parent ? parent.link : null;
+    }
   },
   methods: {    
     async download() {
@@ -97,9 +103,9 @@ export default {
             </div>
           </div>
 
-          <div class="d-flex info-row mt-1">
+          <div class="d-flex info-row mt-1" v-if="detailUrl && detail === 0">          
             <div class="info-col-3">
-              <div class="zmt-1"><a class="download-button" href="#">{{ i18n.complete_sheet }}</a></div>            
+              <div class="zmt-1"><a class="download-button" target="_parent" :href="detailUrl">{{ i18n.complete_sheet }}</a></div>            
             </div>
             <div class="info-col-4">
               <img src="/wp-content/themes/divi-child/map/assets/images/interreg_ue.svg" class="tooltip-image mt-05">

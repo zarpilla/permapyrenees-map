@@ -1,19 +1,45 @@
-body { margin: 0; padding: 0; font-family: 'Montserrat';}
-#legend { position: absolute; top: 0; bottom: 0; width: 100%; height: 50px; background-color: #e8eced; color: #46717a}
-#legend > div { padding: 0.95rem 4rem;  }
-#map { position: absolute; top: 50px; bottom: 0; width: 100%; }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat';
+}
+
+#legend {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #e8eced;
+  color: #46717a
+}
+
+#legend>div {
+  padding: 0.95rem 4rem;
+}
+
+#map {
+  position: absolute;
+  top: 50px;
+  bottom: 0;
+  width: 100%;
+}
+
 .d-flex {
   display: flex;
   justify-content: center;
 }
+
 .zzjustify-content-between {
   justify-content: space-between;
 }
-.sensors-list{
+
+.sensors-list {
   width: auto;
   margin: auto;
 }
-.legend-title{
+
+.legend-title {
   color: #46717a;
   font-size: 0.8rem;
   font-weight: bold;
@@ -21,15 +47,17 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   line-height: 24px;
   width: 15%;
 }
-.legend-text{
+
+.legend-text {
   color: #46717a;
   font-size: 0.8rem;
   line-height: 24px;
   width: 25%;
   text-align: right;
 }
-.select-type{
-  color: #46717a;  
+
+.select-type {
+  color: #46717a;
   margin-right: 2rem;
   cursor: pointer;
   text-transform: uppercase;
@@ -37,48 +65,54 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   margin-left: 0.25rem;
   line-height: 24px;
 }
+
 .select-type svg {
-  fill: #46717a!important;  
+  fill: #46717a !important;
   vertical-align: -4px;
-  margin-right: 0.25rem;  
+  margin-right: 0.25rem;
   padding-left: 0.25rem;
   height: 16px;
   width: 16px;
 }
-.change-map-type-custom-control{
+
+.change-map-type-custom-control {
   color: #000;
   background: #fff;
   padding: 5px;
   padding-bottom: 0;
   border-radius: 4px;
-  box-shadow: 0 0 0 2px rgba(0,0,0,.1);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, .1);
   cursor: pointer;
   z-index: 100;
 }
-.change-map-type-custom-control svg{
+
+.change-map-type-custom-control svg {
   fill: #000;
   width: 20px;
   height: 20px;
 }
+
 .marker-sensor {
   background-image: url('/wp-content/themes/divi-child/map/assets/images/sensor.svg');
   background-size: cover;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  cursor: pointer;  
+  cursor: pointer;
   margin-top: -30px;
 }
-.marker-sensor::before{
+
+.marker-sensor::before {
   background-color: #46717A;
   content: '';
   position: absolute;
   width: 2px;
-  height: 30px;  
+  height: 30px;
   top: 30px;
   left: 15px;
-} 
-.type-icon{
+}
+
+.type-icon {
   width: 24px;
   height: 24px;
   vertical-align: -7px;
@@ -94,12 +128,13 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   cursor: pointer;
   margin-top: -100px;
 }
-.marker-drilling::before{
+
+.marker-drilling::before {
   background-color: #fff;
   content: '';
   position: absolute;
   width: 2px;
-  height: 100px;  
+  height: 100px;
   top: 48px;
   left: 23px;
 }
@@ -121,7 +156,7 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  content:'';
+  content: '';
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
@@ -132,6 +167,7 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   -moz-transition: background 0.2s, color 0.2s;
   transition: background 0.2s, color 0.2s;
 }
+
 .hovicon.effect-1:after {
   top: -5px;
   left: -5px;
@@ -147,26 +183,27 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   opacity: 0;
 }
 
-.hovicon.effect-1:hover:after, .hovicon.effect-1.active:after {
+.hovicon.effect-1:hover:after,
+.hovicon.effect-1.active:after {
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
   -ms-transform: scale(1);
   transform: scale(1);
   opacity: 1;
-} 
+}
 
 
 
 
-.tooltip{
+.tooltip {
   background-color: #fff;
   color: #000;
-  padding: 1.25rem;  
+  padding: 1.25rem;
   font-size: 0.80rem;
   position: absolute;
   z-index: 1000;
   display: block;
-  top: 70px;
+  top: 60px;
   right: 60px;
   width: 330px;
   height: auto;
@@ -176,24 +213,27 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   z-index: 100;
 }
 
-.close{
+.close {
   position: absolute;
   top: 10px;
   right: 10px;
   padding: 0.125rem;
   cursor: pointer;
-  border: 2px solid #46717A;  
+  border: 2px solid #46717A;
 }
-.close svg{
+
+.close svg {
   fill: #46717A;
   width: 20px;
   height: 20px;
   vertical-align: -2px;
 }
-.tooltip-logo{
+
+.tooltip-logo {
   width: 60px;
 }
-.tooltip h1{
+
+.tooltip h1 {
   font-size: 2.0rem;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
@@ -201,57 +241,71 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
-.tooltip-image{
+
+.tooltip-image {
   width: 100%;
   margin-bottom: 0.25rem;
 }
-.tooltip-icon{
+
+.tooltip-icon {
   width: 28px;
 }
-.info-row{
+
+.info-row {
   justify-content: start;
   margin-top: 0.5rem;
 }
-.info-col-1{
+
+.info-col-1 {
   width: 40px;
 }
-.info-row-bb{
+
+.info-row-bb {
   border-bottom: 1px solid #46717A;
   padding-bottom: 0.5rem;
 }
-.mt-1{
+
+.mt-1 {
   margin-top: 0.5rem;
 }
-.mt-05{
+
+.mt-05 {
   margin-top: 0.25rem;
 }
-.download{
+
+.download {
   font-weight: bold;
   text-decoration: none;
-  color: #000;  
+  color: #000;
 }
-.download svg{
+
+.download svg {
   fill: #46717A;
 }
-.info-col-2{
+
+.info-col-2 {
   width: 100%;
 }
-.info-col-3{
+
+.info-col-3 {
   width: 100%;
   padding-right: 0.5rem;
 }
-.info-col-4{
+
+.info-col-4 {
   width: 100%;
   padding-left: 0.5rem;
 }
 
-.zinfo-col-3{
+.zinfo-col-3 {
   width: 50%;
 }
-.info-col-3 img{
+
+.info-col-3 img {
   width: 100%;
 }
-.download-button{
+
+.download-button {
   display: block;
   background: #46717A;
   height: 36px;
@@ -263,34 +317,40 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   font-size: 0.7rem;
   text-transform: uppercase;
 }
-.download-button:hover{
+
+.download-button:hover {
   background: #000;
 }
-.ms-auto{
+
+.ms-auto {
   margin-left: auto;
 }
 
-.text-start{
+.text-start {
   margin-left: 0;
   margin-right: auto;
 }
-.ctrl-options{
+
+.ctrl-options {
   display: none;
 }
-.close-legend{
+
+.close-legend {
   display: none;
 }
 
 @media (max-width: 1250px) {
-  .legend-title{
+  .legend-title {
     display: none;
     width: 15%;
   }
-  .legend-text{
+
+  .legend-text {
     display: none;
     width: 15%;
   }
-  #legend > div{
+
+  #legend>div {
     padding: 1rem 1rem;
   }
 }
@@ -299,12 +359,15 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
   body {
     font-size: 14px;
   }
-  .xs-hidden{    
+
+  .xs-hidden {
     transition: margin-right 0.3s ease;
   }
-  .d-block-xs{
-    display: block!important;
+
+  .d-block-xs {
+    display: block !important;
   }
+
   #legend {
     display: block;
     z-index: 1000;
@@ -315,69 +378,85 @@ body { margin: 0; padding: 0; font-family: 'Montserrat';}
     margin-right: 0;
     transition: margin-right 0.3s ease;
   }
-  
-  #legend.xs-hidden{
+
+  #legend.xs-hidden {
     margin-right: -230px;
     transition: margin-right 0.3s ease;
   }
 
-  #legend > div{
+  #legend>div {
     padding: 1rem 1rem;
   }
-  .close-legend{
+
+  .close-legend {
     display: block;
     position: absolute;
     top: 10px;
     right: 10px;
-    padding: 0!important;
+    padding: 0 !important;
     cursor: pointer;
   }
-  .legend-title{
+
+  .legend-title {
     margin-bottom: 1rem;
   }
-  .legend-title, .legend-text{
+
+  .legend-title,
+  .legend-text {
     display: block;
     width: 100%;
-    text-align: left;    
+    text-align: left;
   }
-  .legend-text{
+
+  .legend-text {
     margin-top: 1rem;
   }
-  .select-type{
+
+  .select-type {
     margin-bottom: 0.75rem;
   }
-  .sensors-list{
+
+  .sensors-list {
     display: block;
   }
+
   #map {
     top: 0px;
-  }  
+  }
+
   .tooltip {
     top: 20px;
     right: 20px;
     width: calc(100vw - 120px);
   }
+
   .tooltip h1 {
     font-size: 1.6rem;
   }
+
   .tooltip-icon {
     width: 20px;
   }
+
   .info-row {
     margin-top: 0.3rem;
   }
+
   .info-col-1 {
     width: 30px;
   }
+
   .info-col-3 img {
     width: 80%;
   }
+
   .download-button {
     height: 30px;
     line-height: 30px;
     font-size: 0.6rem;
   }
-  .ctrl-options{
+
+  .ctrl-options {
     display: block;
   }
 }

@@ -28,6 +28,10 @@ export default {
       base: "https://permapyrenees.eu",
       layers: ["mountains", "cities", "roads", "pois"],
       layersSelected: [],
+      zoom: 8,
+      lat: 42.338473777989066,
+      lng: -0.10777898737029545,
+      detail: 0
     };
   },
   computed: {},
@@ -42,13 +46,32 @@ export default {
           "map-styles-full"
         );
       }
+
+      if (this.getQuerystringParameter("zoom")) {
+        this.zoom = parseInt(this.getQuerystringParameter("zoom"));        
+      }
+      if (this.getQuerystringParameter("lat")) {
+        this.lat = parseFloat(this.getQuerystringParameter("lat"));
+      }
+      if (this.getQuerystringParameter("lng")) {
+        this.lng = parseFloat(this.getQuerystringParameter("lng"));
+      }
+      if (this.getQuerystringParameter("detail")) {
+        this.detail = parseInt(this.getQuerystringParameter("detail"));
+      }
+
+
+      if (window.innerWidth < 768) {
+        this.zoom = this.zoom - 2;
+      }
+
+
       mapboxgl.accessToken =
         "pk.eyJ1Ijoiam9yZGl3ZWJjb29wIiwiYSI6ImNseWN0azh5NDFhZTEybHM2OXdrNWMwbTkifQ.zNm6Ce6CMxwpnPcbMsXjXA";
       this.map = new mapboxgl.Map({
         container: "map", // container ID
-        zoom: window.innerWidth > 768 ? 8 : 6,
-        //center: [1.4583199, 42.5785726],
-        center: [-0.10777898737029545, 42.338473777989066],
+        zoom: this.zoom,        
+        center: [this.lng, this.lat], // starting position [lng, lat]
         pitch: this.pitch,
         bearing: this.bearing,
         style: "mapbox://styles/mapbox/outdoors-v12",
@@ -383,9 +406,14 @@ export default {
         );
       }
     },
+    getQuerystringParameter(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
   },
   template: `
     <div id="app-wrapper">    
+      <div id="zzz" class="xs-hidden">
       <div id="legend" class="xs-hidden">
         <div class="close-legend" @click="closeLegend">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
@@ -416,10 +444,13 @@ export default {
           <div class="legend-text"></div>
         </div>      
       </div>
+      </div>
+
+
       <div class="tooltip-placeholder" v-if="mode === 'full'">
         <img v-if="tooltip === null" class="tooltip-logo tooltip-placeholder-logo" src="/wp-content/themes/divi-child/map/assets/images/logo_tipo_negra.svg" alt="tooltip" />
       </div>
-      <TooltipComponent @close="close" :tooltip="tooltip" :base="base"></TooltipComponent>
+      <TooltipComponent @close="close" :tooltip="tooltip" :base="base" :items="mapItems" :detail="detail"></TooltipComponent>
       <div id="map"></div>
       
     </div>

@@ -52,7 +52,7 @@ const removeScript = (id) => {
 
 const i18n = () => {
   const href = window.location.href.toString()
-  const currentLang = href.indexOf("/es/") !== -1 ? "es" : ( href.indexOf("/en/") !== -1 ? "en" : ( href.indexOf("/fr/") !== -1 ? "fr" : "ca" ) )
+  const currentLang = href.indexOf("/ca/") !== -1 ? "ca" : ( href.indexOf("/en/") !== -1 ? "en" : ( href.indexOf("/fr/") !== -1 ? "fr" : "es" ) )
   return i18nTexts[currentLang]
 }
 

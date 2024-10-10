@@ -28,7 +28,7 @@
   top: 100px;
   right: 0;
   margin-right: 100px;
-  max-height: calc(90vh - 76px);
+  min-height: calc(90vh - 51px);
 }
 
 .tooltip-placeholder {

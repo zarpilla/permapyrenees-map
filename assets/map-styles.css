@@ -93,7 +93,7 @@ body {
 }
 
 .marker-sensor {
-  background-image: url('/wp-content/themes/divi-child/map/assets/images/sensor.svg');
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-sensor.svg');
   background-size: cover;
   width: 32px;
   height: 32px;
@@ -101,6 +101,34 @@ body {
   cursor: pointer;
   margin-top: -30px;
 }
+.marker-drilling {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-drilling.svg');
+}
+.marker-zone {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-zone.svg');
+}
+.marker-thermal_sensors {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-thermal_sensors.svg');
+}
+.marker-corner_reflectors {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-corner_reflectors.svg');
+}
+.marker-loggers {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-loggers.svg');
+}
+.marker-dating_samples {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-dating_samples.svg');
+}
+.marker-geomorphological_map {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-geomorphological_map.svg');
+}
+.marker-geophysical_profile {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-geophysical_profile.svg');
+}
+.marker-rock_samples {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-rock_samples.svg');
+}
+
 
 .marker-sensor::before {
   background-color: #46717A;
@@ -119,8 +147,19 @@ body {
   margin-right: 0.5rem;
 }
 
-.marker-drilling {
-  background-image: url('/wp-content/themes/divi-child/map/assets/images/drilling.svg');
+
+/* .marker-drilling::before {
+  background-color: #fff;
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 100px;
+  top: 48px;
+  left: 23px;
+} */
+
+.marker-zone {
+  background-image: url('/wp-content/themes/divi-child/map/assets/images/marker-zone.svg');
   background-size: cover;
   width: 48px;
   height: 48px;
@@ -129,7 +168,7 @@ body {
   margin-top: -100px;
 }
 
-.marker-drilling::before {
+.marker-zone::before {
   background-color: #fff;
   content: '';
   position: absolute;
@@ -245,8 +284,13 @@ body {
 .tooltip-image {
   width: 100%;
   margin-bottom: 0.25rem;
+  height: 230px;
+  object-fit: cover;
 }
-
+.tooltip-ue{
+  width: 100%;
+  margin-bottom: 0.25rem;
+}
 .tooltip-icon {
   width: 28px;
 }

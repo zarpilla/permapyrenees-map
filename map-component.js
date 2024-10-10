@@ -15,8 +15,8 @@ export default {
   },
   data() {
     return {
-      types: ["sensor", "drilling", "zone"],
-      typesSelected: ["sensor", "drilling", "zone"],
+      types: ["sensor", "zone"],
+      typesSelected: ["sensor", "zone"],
       map: null,
       mapStyle: "3d",
       tooltip: null,
@@ -28,10 +28,12 @@ export default {
       base: "https://permapyrenees.eu",
       layers: ["mountains", "cities", "roads", "pois"],
       layersSelected: [],
-      zoom: 8,
-      lat: 42.338473777989066,
-      lng: -0.10777898737029545,
-      detail: 0
+      zoom: 9,
+      zlat: 42.338473777989066,
+      zlng: -0.10777898737029545,
+      lat: 42.7035437,
+      lng: 0.683142,
+      detail: 0,
     };
   },
   computed: {},
@@ -48,7 +50,7 @@ export default {
       }
 
       if (this.getQuerystringParameter("zoom")) {
-        this.zoom = parseInt(this.getQuerystringParameter("zoom"));        
+        this.zoom = parseInt(this.getQuerystringParameter("zoom"));
       }
       if (this.getQuerystringParameter("lat")) {
         this.lat = parseFloat(this.getQuerystringParameter("lat"));
@@ -59,30 +61,37 @@ export default {
       if (this.getQuerystringParameter("detail")) {
         this.detail = parseInt(this.getQuerystringParameter("detail"));
       }
-
+      if (this.getQuerystringParameter("bearing")) {
+        this.bearing = parseFloat(this.getQuerystringParameter("bearing"));
+      }
+      if (this.getQuerystringParameter("pitch")) {
+        this.pitch = parseFloat(this.getQuerystringParameter("pitch"));
+      }
 
       if (window.innerWidth < 768) {
         this.zoom = this.zoom - 2;
       }
 
-
       mapboxgl.accessToken =
         "pk.eyJ1Ijoiam9yZGl3ZWJjb29wIiwiYSI6ImNseWN0azh5NDFhZTEybHM2OXdrNWMwbTkifQ.zNm6Ce6CMxwpnPcbMsXjXA";
       this.map = new mapboxgl.Map({
         container: "map", // container ID
-        zoom: this.zoom,        
+        zoom: this.zoom,
         center: [this.lng, this.lat], // starting position [lng, lat]
         pitch: this.pitch,
         bearing: this.bearing,
         style: "mapbox://styles/mapbox/outdoors-v12",
-        scrollZoom      : false,
-        boxZoom         : true,
-        doubleClickZoom : true
+        scrollZoom: false,
+        boxZoom: true,
+        doubleClickZoom: true,
       });
 
       this.map.addControl(new mapboxgl.NavigationControl(), "top-left");
 
       class ChangeMapTypeCustomControl {
+        constructor(t) {
+          this.t = t;
+        }
         onAdd(map) {
           this.map = map;
           this.mapStyle = "3d";
@@ -115,7 +124,7 @@ export default {
               this.map.easeTo({ pitch: 0, bearing: 0, duration: 1000 });
             } else {
               this.mapStyle = "3d";
-              this.map.easeTo({ pitch: 60, bearing: 41, duration: 1000 });
+              this.map.easeTo({ pitch: this.t.pitch, bearing: this.t.bearing, duration: 1000 });
               this.map.addSource("mapbox-dem", {
                 type: "raster-dem",
                 url: "mapbox://mapbox.mapbox-terrain-dem-v1",
@@ -134,11 +143,11 @@ export default {
         }
       }
 
-      const changeMapTypeCustomControl = new ChangeMapTypeCustomControl();
+      const changeMapTypeCustomControl = new ChangeMapTypeCustomControl(this);
 
       this.map.addControl(changeMapTypeCustomControl, "top-left");
 
-      class MapOptionsCustomControl {     
+      class MapOptionsCustomControl {
         constructor(t) {
           this.t = t;
         }
@@ -170,9 +179,8 @@ export default {
         }
       }
 
-      console.log("this", this);
       const mapOptionsCustomControl = new MapOptionsCustomControl(this);
-      mapOptionsCustomControl
+      mapOptionsCustomControl;
 
       this.map.addControl(mapOptionsCustomControl, "top-left");
 
@@ -262,24 +270,32 @@ export default {
             //   this.clickOnMap(e)
             // });
           } else {
-            const el = document.createElement("div");
-            el.className = `marker-${mapItem.acf.type} hovicon effect-1`;
-            el.id = `marker-${mapItem.id}`;
-            const marker = new mapboxgl.Marker(el, { anchor: "bottom" })
-              .setLngLat([mapItem.acf.longitude, mapItem.acf.latitude])
-              .addTo(this.map);
-            marker.getElement().addEventListener("click", () => {
-              this.map.flyTo({
-                center: [mapItem.acf.longitude, mapItem.acf.latitude],
-              });
-              this.drawTooltip(mapItem);
-              const hoviconElements = document.querySelectorAll(".hovicon");
-              hoviconElements.forEach((element) => {
-                element.classList.remove("active");
-              });
-              el.classList.toggle("active");
-            });
           }
+
+          const css =
+            mapItem.acf.type === "zone"
+              ? "zone"
+              : mapItem.acf.tools.length
+              ? mapItem.acf.tools[0]
+              : "z";
+
+          const el = document.createElement("div");
+          el.className = `marker-sensor marker-${css} hovicon effect-1`;
+          el.id = `marker-${mapItem.id}`;
+          const marker = new mapboxgl.Marker(el, { anchor: "bottom" })
+            .setLngLat([mapItem.acf.longitude, mapItem.acf.latitude])
+            .addTo(this.map);
+          marker.getElement().addEventListener("click", () => {
+            this.map.flyTo({
+              center: [mapItem.acf.longitude, mapItem.acf.latitude],
+            });
+            this.drawTooltip(mapItem);
+            const hoviconElements = document.querySelectorAll(".hovicon");
+            hoviconElements.forEach((element) => {
+              element.classList.remove("active");
+            });
+            el.classList.toggle("active");
+          });
         }
       } else {
         for (const mapItem of this.mapItems) {
@@ -296,10 +312,13 @@ export default {
               "visibility",
               visibility
             );
+            const id = `marker-${mapItem.id}`;
+            document.getElementById(id).style.display =
+              this.typesSelected.includes("zone") ? "block" : "none";
           } else {
             const id = `marker-${mapItem.id}`;
             document.getElementById(id).style.display =
-              this.typesSelected.includes(mapItem.acf.type) ? "block" : "none";
+              this.typesSelected.includes("sensor") ? "block" : "none";
           }
         }
       }
@@ -409,7 +428,7 @@ export default {
     getQuerystringParameter(name) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(name);
-    }
+    },
   },
   template: `
     <div id="app-wrapper">    
